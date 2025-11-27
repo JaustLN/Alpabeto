@@ -173,7 +173,7 @@ function drawLetter(letter){
 drawLetter(currentLetter);
 
 // Drawing setup
-ctx.lineWidth=4; 
+ctx.lineWidth=10; 
 ctx.lineCap='round'; 
 ctx.strokeStyle='#333';
 
@@ -212,7 +212,7 @@ document.getElementById('saveBtn').addEventListener('click', ()=>{
 
 // Letters buttons
 const patinig = ['A','E','I','O','U'];
-const katinig = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').filter(l=>!patinig.includes(l));
+const katinig = 'DGIJNPQRSUVWY'.split('').filter(l=>!patinig.includes(l));
 const lettersDiv = document.getElementById('letterButtons');
 
 function showLetters(letters){
