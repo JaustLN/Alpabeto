@@ -48,16 +48,34 @@
     100% { transform: translateY(0) rotate(360deg); }
   }
 
+  /* Extra floating elements (circles) */
+  .bubble {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.3);
+    animation: bubbleFloat 15s infinite linear;
+  }
+
+  @keyframes bubbleFloat {
+    0% { transform: translateY(0) scale(1); opacity: 0.5; }
+    50% { transform: translateY(-100px) scale(1.2); opacity: 1; }
+    100% { transform: translateY(0) scale(1); opacity: 0.5; }
+  }
+
+  /* Individual icon positions */
   .icon1 { top: 10%; left: 5%; }
   .icon2 { top: 70%; left: 10%; }
   .icon3 { top: 20%; right: 5%; }
   .icon4 { bottom: 15%; right: 10%; }
+  .icon5 { top: 50%; left: 50%; font-size: 3em; color: rgba(255,255,255,0.6); }
+  .icon6 { top: 30%; right: 40%; font-size: 2em; color: rgba(255,255,255,0.7); }
+  .icon7 { bottom: 40%; left: 20%; font-size: 2.2em; color: rgba(255,255,255,0.5); }
 
   /* Main button */
   a#alpabeto {
     text-decoration: none;
     font-size: 3em;
-    color: #fff;
+    color: #4B0082; /* Dark purple for visibility */
     padding: 25px 60px;
     border: 3px solid #fff;
     border-radius: 20px;
@@ -66,6 +84,7 @@
     background-color: rgba(255,255,255,0.2);
     backdrop-filter: blur(5px);
     z-index: 10;
+    text-shadow: 2px 2px 5px rgba(0,0,0,0.3);
   }
 
   a#alpabeto:hover {
@@ -108,6 +127,16 @@
 <i class="fas fa-dove icon icon2"></i>
 <i class="fas fa-paw icon icon3"></i>
 <i class="fas fa-seedling icon icon4"></i>
+<i class="fas fa-feather icon icon5"></i>
+<i class="fas fa-star icon icon6"></i>
+<i class="fas fa-heart icon icon7"></i>
+
+<!-- Floating bubbles -->
+<div class="bubble" style="width: 15px; height: 15px; left: 20%; top: 80%; animation-duration: 12s;"></div>
+<div class="bubble" style="width: 20px; height: 20px; left: 50%; top: 90%; animation-duration: 18s;"></div>
+<div class="bubble" style="width: 10px; height: 10px; left: 70%; top: 60%; animation-duration: 10s;"></div>
+<div class="bubble" style="width: 25px; height: 25px; left: 80%; top: 70%; animation-duration: 22s;"></div>
+<div class="bubble" style="width: 18px; height: 18px; left: 35%; top: 50%; animation-duration: 16s;"></div>
 
 <!-- Main Button -->
 <a href="next.html" id="alpabeto">ALPABETO</a>
