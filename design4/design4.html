@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sidebar + Alphabet Game</title>
+
+<style>
+/* ---------- Gradient Background ---------- */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    display: flex;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #FFDEE9, #B5FFFC, #FFF6B7, #FFB3BA);
+    background-size: 800% 800%;
+    animation: gradientAnim 20s ease infinite;
+}
+@keyframes gradientAnim {
+    0% { background-position: 0% 50%; }
+    25% { background-position: 50% 100%; }
+    50% { background-position: 100% 50%; }
+    75% { background-position: 50% 0%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* ---------- Sidebar ---------- */
+.sidebar {
+    width: 280px;
+    background: linear-gradient(to bottom, #FF6B6B, #FFD93D);
+    color: white;
+    height: 100vh;
+    padding-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
+}
+.sidebar button {
+    width: 240px;
+    padding: 12px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 12px;
+    background-color: #FF9F80;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    text-align: left;
+    font-weight: bold;
+    transition: 0.3s;
+}
+.sidebar button:hover {
+    background-color: #FF6B6B;
+    transform: scale(1.05);
+}
+
+/* ---------- Main Content ---------- */
+.main {
+    flex: 1;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative; /* for popup positioning */
+}
+
+/* ---------- PATINIG & KATINIG Boxes ---------- */
+.menu-wrapper {
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+.menu-box {
+    width: 250px;
+    padding: 25px;
+    background: white;
+    border-radius: 22px;
+    font-size: 26px;
+    font-weight: bold;
+    cursor: pointer;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    transition: 0.3s;
+}
+.menu-box:hover {
+    transform: scale(1.05);
+    background: #FFE8D6;
+}
+
+/* ---------- Letters Display ---------- */
+.letters-container {
+    display: flex;
+    gap: 40px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 30px;
+}
+
+.letters-box {
+    background: #fff;
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    min-width: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.letters-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: #FF6B6B;
+    text-align: center;
+}
+
+/* Horizontal letters */
+#patinig-letters, #katinig-letters {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+}
+
+/* Letter Buttons */
+.letter-btn {
+    width: 70px;
+    height: 70px;
+    font-size: 28px;
+    font-weight: bold;
+    border-radius: 20px;
+    background: #FFF2CC;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.2s;
+}
+.letter-btn:hover {
+    transform: scale(1.2);
+    background: #FFD580;
+}
+
+/* ---------- Giant Popup ---------- */
+#letter-popup {
+    position: absolute; /* relative to main */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    font-size: 150px;
+    font-weight: bold;
+    background: rgba(255,255,255,0.95);
+    padding: 50px;
+    border-radius: 25px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+    z-index: 9999;
+    text-align: center;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    opacity: 0;
+}
+#letter-popup.show { 
+    transform: translate(-50%, -50%) scale(1); 
+    opacity: 1; 
+}
+
+@media(max-width:768px){
+    .menu-wrapper{flex-direction: column;}
+    .letters-container{flex-direction: column; align-items: center;}
+    .letters-box{min-width: 90%;}
+}
+</style>
+</head>
+
+<body>
+
+<!-- Sidebar -->
+<div class="sidebar">
+    <button onclick="location.href='../index.html'">🏠 Homepage</button>
+    <button onclick="location.href='../next.html'">📚 Selection</button>
+    <button onclick="location.href='../about.html'">😊 About Us</button>
+</div>
+
+<!-- Main Content -->
+<div class="main">
+    <div class="menu-wrapper">
+        <div class="menu-box" onclick="toggleLetters('patinig')">PATINIG</div>
+        <div class="menu-box" onclick="toggleLetters('katinig')">KATINIG</div>
+    </div>
+
+    <div class="letters-container">
+        <!-- Patinig Letters -->
+        <div class="letters-box" id="patinig-box">
+            <div class="letters-title">Patinig</div>
+            <div id="patinig-letters"></div>
+        </div>
+        <!-- Katinig Letters -->
+        <div class="letters-box" id="katinig-box">
+            <div class="letters-title">Katinig</div>
+            <div id="katinig-letters"></div>
+        </div>
+    </div>
+</div>
+
+<!-- Giant Letter Popup -->
+<div id="letter-popup"></div>
+
+<script>
+// Letters
+const patinig = ["A","E","I","O","U"];
+const katinig = ["D","G","J","N","P","Q","R","V","W","Y"]; // reduced Katinig set
+
+// Render letters
+function renderLetters(list, containerId){
+    const container = document.getElementById(containerId);
+    container.innerHTML = "";
+    list.forEach(letter=>{
+        const btn = document.createElement("div");
+        btn.className = "letter-btn";
+        btn.textContent = letter + letter.toLowerCase(); // Small caps
+        btn.setAttribute("data-sound", letter.toLowerCase());
+        btn.setAttribute("data-full", letter + letter.toLowerCase());
+        btn.onclick = ()=> showLetter(letter);
+        container.appendChild(btn);
+    });
+}
+
+// Show giant popup + sound
+const main = document.querySelector('.main');
+const popup = document.getElementById("letter-popup");
+main.appendChild(popup); // popup inside main
+
+function showLetter(letter){
+    popup.textContent = letter + letter.toLowerCase();
+    popup.classList.add("show");
+    const audio = new Audio(`sounds/${letter.toLowerCase()}.mp3`);
+    audio.play().catch(()=>console.log("Missing sound:", letter));
+    setTimeout(()=> popup.classList.remove("show"),1500);
+}
+
+// Toggle visibility
+function toggleLetters(type){
+    if(type==="patinig"){
+        document.getElementById("patinig-box").style.display="flex";
+        document.getElementById("katinig-box").style.display="none";
+        renderLetters(patinig,"patinig-letters");
+    } else {
+        document.getElementById("patinig-box").style.display="none";
+        document.getElementById("katinig-box").style.display="flex";
+        renderLetters(katinig,"katinig-letters");
+    }
+}
+
+// Initialize hidden
+document.getElementById("patinig-box").style.display="none";
+document.getElementById("katinig-box").style.display="none";
+</script>
+
+</body>
+</html>
