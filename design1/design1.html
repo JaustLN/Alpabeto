@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Titik - Alphabet</title>
+<style>
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #FFDEE9, #B5FFFC, #FFF6B7, #FFB3BA);
+    background-size: 800% 800%;
+    animation: gradientAnim 20s ease infinite;
+    overflow-x: hidden;
+}
+
+@keyframes gradientAnim {
+    0% { background-position: 0% 50%; }
+    25% { background-position: 50% 100%; }
+    50% { background-position: 100% 50%; }
+    75% { background-position: 50% 0%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Header */
+header {
+    width: 100%;
+    background: linear-gradient(to right, #FFB3BA, #FFF6B7); /* pastel pink → pastel yellow */
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 15px 25px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+header button {
+    margin-right: 15px;
+    padding: 14px 28px;
+    border: none;
+    border-radius: 12px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #FF6B6B; /* soft red for contrast */
+    cursor: pointer;
+    background-color: #FFE5D9; /* pastel peach */
+    transition: background-color 0.3s, transform 0.2s;
+}
+header button:hover { background-color: #FFD6AA; transform: scale(1.05); }
+
+/* Main content */
+.main-content {
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+h1 {
+    font-size: 50px; /* larger for laptop */
+    color: #FF6B6B;
+    text-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+    margin-top: 20px;
+    text-align: center;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 50px;
+    margin-top: 20px;
+}
+
+.box {
+    width: 100%;
+    max-width: 900px; /* larger boxes */
+    padding: 35px; /* increased padding */
+    border-radius: 25px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+    text-align: center;
+    transition: transform 0.3s;
+}
+.box:hover { transform: scale(1.03); }
+
+.titik-box { background: linear-gradient(135deg, #C3F0CA, #B3DAFF); }
+
+.letters {
+    display: flex;
+    justify-content: space-evenly;
+    gap: 20px;
+    flex-wrap: nowrap;
+    padding: 15px 0;
+}
+
+.letter {
+    font-size: 32px; /* larger letters */
+    padding: 18px 24px;
+    cursor: pointer;
+    display: inline-block;
+    border-radius: 25px;
+    background: #fff3f3;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+    font-weight: bold;
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+.letter:hover { transform: scale(1.3); color: #FF6B6B; }
+
+/* Overlay */
+#overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #FFDEE9, #B5FFFC, #FFF6B7, #FFB3BA);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    z-index: 9999;
+}
+
+#overlay::before {
+    content: "";
+    position: absolute;
+    top:0; left:0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.4);
+    z-index: 1;
+}
+
+#overlay .letter-large {
+    font-size: 25vw; /* overlay letter size unchanged */
+    color: #FFFFFF;
+    font-weight: bold;
+    margin-bottom: 30px;
+    z-index: 2;
+}
+
+#overlay button {
+    padding: 14px 28px;
+    margin: 10px;
+    font-size: 20px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    background-color: #FF9F80;
+    color: white;
+    transition: background-color 0.3s;
+    z-index: 2;
+}
+#overlay button:hover { background-color: #FF6B6B; }
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+    .letter { font-size: 28px; padding: 16px 20px; }
+}
+@media (max-width: 768px) {
+    h1 { font-size: 40px; }
+    .letter { font-size: 24px; padding: 14px 18px; }
+}
+@media (max-width: 480px) {
+    h1 { font-size: 32px; }
+    .letter { font-size: 20px; padding: 12px 16px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+    <button onclick="location.href='../index.html'">🏠 Home</button>
+    <button onclick="location.href='../next.html'">📚 Selection</button>
+    <button onclick="location.href='../about.html'">😊 About Us</button>
+</header>
+
+<div class="main-content">
+    <h1>Titik</h1>
+
+    <div class="container">
+
+        <div class="box titik-box">
+            <div class="letters">
+                <div class="letter" data-sound="i" data-full="Ii">Ii</div>
+                <div class="letter" data-sound="r" data-full="Rr">Rr</div>
+                <div class="letter" data-sound="h" data-full="Hh">Hh</div>
+                <div class="letter" data-sound="w" data-full="Ww">Ww</div>
+                <div class="letter" data-sound="n" data-full="Nn">Nn</div>
+                <div class="letter" data-sound="l" data-full="Ll">Ll</div>
+                <div class="letter" data-sound="y" data-full="Yy">Yy</div>
+                <div class="letter" data-sound="g" data-full="Gg">Gg</div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Overlay -->
+<div id="overlay">
+    <div class="letter-large" id="large-letter"></div>
+    <button id="play-sound">🔊 Play Sound</button>
+    <button id="back-btn">⬅ Back</button>
+</div>
+
+<!-- Hidden audio elements -->
+<audio id="audio-i" src="I.mp3"></audio>
+<audio id="audio-r" src="R.mp3"></audio>
+<audio id="audio-h" src="H.mp3"></audio>
+<audio id="audio-w" src="W.mp3"></audio>
+<audio id="audio-n" src="N.mp3"></audio>
+<audio id="audio-l" src="L.mp3"></audio>
+<audio id="audio-y" src="Y.mp3"></audio>
+<audio id="audio-g" src="G.mp3"></audio>
+
+<script>
+const letters = document.querySelectorAll('.letter');
+const overlay = document.getElementById('overlay');
+const largeLetter = document.getElementById('large-letter');
+const playBtn = document.getElementById('play-sound');
+const backBtn = document.getElementById('back-btn');
+let currentAudio = null;
+
+letters.forEach(letter => {
+    letter.addEventListener('click', () => {
+        largeLetter.textContent = letter.dataset.full;
+        currentAudio = document.getElementById('audio-' + letter.dataset.sound);
+        overlay.style.display = 'flex';
+    });
+});
+
+playBtn.addEventListener('click', () => {
+    if(currentAudio){
+        currentAudio.currentTime = 0;
+        currentAudio.play();
+    }
+});
+
+backBtn.addEventListener('click', () => {
+    overlay.style.display = 'none';
+});
+</script>
+
+</body>
+</html>
