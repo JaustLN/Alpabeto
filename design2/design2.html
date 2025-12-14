@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Titik Matching Game</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+}
+
+/* ---------- BODY ---------- */
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #FFDEE9, #B5FFFC, #FFF6B7, #FFB3BA);
+    background-size: 800% 800%;
+    animation: gradientAnim 20s ease infinite;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+@keyframes gradientAnim {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* ---------- HEADER ---------- */
+header {
+    height: 80px;
+    flex-shrink: 0;
+    background: linear-gradient(to right, #FFB3BA, #FFF6B7);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 0 25px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+header button {
+    padding: 12px 22px;
+    border: none;
+    border-radius: 12px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    background: #FFE5D9;
+}
+
+/* ---------- MAIN ---------- */
+.main {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: calc(100vh - 80px);
+}
+
+/* ---------- START BUTTON ---------- */
+.start-btn {
+    font-size: clamp(48px, 6vw, 72px);
+    font-weight: bold;
+    padding: clamp(40px, 6vh, 80px) clamp(60px, 8vw, 120px);
+    border-radius: 40px;
+    cursor: pointer;
+    background: #FFE8D6;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    transition: transform 0.3s;
+}
+
+.start-btn:hover {
+    transform: scale(1.05);
+}
+
+/* ---------- GAME CONTAINER ---------- */
+.game-container {
+    width: min(98%, 1400px);   /* WIDER */
+    height: min(85vh, 720px);
+    background: white;
+    padding: clamp(30px, 4vh, 60px);
+    border-radius: 40px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.35);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: center;
+}
+
+/* ---------- TITLE ---------- */
+.game-container h2 {
+    font-size: clamp(30px, 3vw, 42px); /* Slightly tuned */
+    margin: 0;
+    white-space: nowrap; /* FORCE ONE LINE */
+}
+
+/* ---------- LETTER GRID ---------- */
+.letters {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: clamp(18px, 2vw, 32px);
+    flex: 1;
+    align-content: center;
+}
+
+.letter {
+    font-size: clamp(36px, 4vw, 56px);
+    padding: clamp(20px, 3vh, 40px);
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: transform 0.2s;
+}
+
+.letter:hover {
+    transform: scale(1.1);
+}
+
+.selected {
+    outline: 5px solid #000;
+}
+
+/* ---------- RESULT ---------- */
+#result {
+    height: 50px;
+    font-size: clamp(28px, 3vw, 40px);
+    font-weight: bold;
+    color: red;
+}
+
+/* ---------- OVERLAY ---------- */
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(135deg, #FFD6E0, #B3DAFF);
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.overlay h1 {
+    font-size: clamp(60px, 8vw, 90px);
+    color: #FF6B6B;
+    margin-bottom: 40px;
+}
+
+.overlay button {
+    padding: 20px 50px;
+    font-size: 28px;
+    border-radius: 20px;
+    border: none;
+    background: #FF6B6B;
+    color: white;
+    cursor: pointer;
+    margin: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <button onclick="location.href='../index.html'">🏠 Home</button>
+    <button onclick="location.href='../next.html'">📚 Selection</button>
+    <button onclick="location.href='../about.html'">😊 About Us</button>
+</header>
+
+<div class="main">
+    <div id="gameArea">
+        <div class="start-btn" onclick="showLetters()">Maglaro</div>
+    </div>
+</div>
+
+<div class="overlay" id="overlay">
+    <h1>MAGALING!</h1>
+    <button onclick="showLetters()">Play Again</button>
+    <button onclick="location.href='../design2/design2.html'">Return</button>
+</div>
+
+<script>
+let first = null;
+let matchesLeft = 0;
+
+const colors = {
+    i: "#FFD580",
+    r: "#B5EAD7",
+    h: "#C7CEEA",
+    n: "#FF9AA2",
+    l: "#E2F0CB",
+    g: "#F6C1CC"
+};
+
+function shuffle(arr) {
+    return arr.sort(() => Math.random() - 0.5);
+}
+
+function showLetters() {
+    const letters = ["i","r","h","n","l","g"];
+    matchesLeft = letters.length;
+
+    let all = [];
+    letters.forEach(l => {
+        all.push({ v: l.toUpperCase(), k: l });
+        all.push({ v: l, k: l });
+    });
+
+    all = shuffle(all);
+
+    document.getElementById("gameArea").innerHTML = `
+        <div class="game-container">
+            <h2>Pagtambalin ang Malaki at Maliit na Titik</h2>
+            <div class="letters">
+                ${all.map(l => `
+                    <div class="letter"
+                        style="background:${colors[l.k]}"
+                        onclick="selectLetter('${l.k}', this)">
+                        ${l.v}
+                    </div>
+                `).join("")}
+            </div>
+            <div id="result"></div>
+        </div>
+    `;
+
+    document.getElementById("overlay").style.display = "none";
+    first = null;
+}
+
+function selectLetter(key, el) {
+    const result = document.getElementById("result");
+
+    if (!first) {
+        first = { key, el };
+        el.classList.add("selected");
+        result.textContent = "";
+    } else {
+        if (first.el === el) return;
+
+        if (first.key === key) {
+            first.el.style.visibility = "hidden";
+            el.style.visibility = "hidden";
+            matchesLeft--;
+
+            if (matchesLeft === 0) {
+                document.getElementById("overlay").style.display = "flex";
+            }
+        } else {
+            result.textContent = "MALI!";
+        }
+
+        first.el.classList.remove("selected");
+        first = null;
+    }
+}
+</script>
+
+</body>
+</html>

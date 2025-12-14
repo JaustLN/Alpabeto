@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Index Page</title>
+
+<!-- Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+  body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-family: 'Fredoka One', Arial, sans-serif;
+    background: linear-gradient(135deg, #a8edea, #fed6e3, #fbc2eb);
+    background-size: 400% 400%;
+    animation: gradientAnimation 15s ease infinite;
+    position: relative;
+    overflow: hidden;
+  }
+
+  @keyframes gradientAnimation {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  .icon {
+    position: absolute;
+    font-size: 2.5em;
+    color: rgba(255,255,255,0.8);
+    pointer-events: none;
+    animation: float 10s infinite linear;
+  }
+
+  @keyframes float {
+    0% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(180deg); }
+    100% { transform: translateY(0) rotate(360deg); }
+  }
+
+  .bubble {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.25);
+    animation: bubbleFloat 15s infinite linear;
+  }
+
+  @keyframes bubbleFloat {
+    0% { transform: translateY(0) scale(1); opacity: 0.6; }
+    50% { transform: translateY(-100px) scale(1.3); opacity: 1; }
+    100% { transform: translateY(0) scale(1); opacity: 0.6; }
+  }
+
+  .icon1 { top: 10%; left: 5%; }
+  .icon2 { top: 70%; left: 10%; }
+  .icon3 { top: 20%; right: 5%; }
+  .icon4 { bottom: 15%; right: 10%; }
+  .icon5 { top: 50%; left: 50%; font-size: 3em; }
+  .icon6 { top: 30%; right: 40%; font-size: 2em; }
+  .icon7 { bottom: 40%; left: 20%; font-size: 2.2em; }
+
+  /* ===== BIGGER ALPABETO BUTTON (3x) ===== */
+  a#alpabeto {
+    text-decoration: none;
+    font-size: 9em;               /* was 3em */
+    color: #714c6e;
+    padding: 75px 180px;          /* was 25px 60px */
+    border: 3px solid #fff;
+    border-radius: 40px;
+    background: rgba(255,255,255,0.25);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+    backdrop-filter: blur(6px);
+    transition: 0.3s;
+    z-index: 10;
+    text-shadow: 3px 3px 8px rgba(0,0,0,0.4);
+  }
+
+  a#alpabeto:hover {
+    transform: scale(1.08) rotate(2deg);
+    background: rgba(255,255,255,0.45);
+    box-shadow: 0 18px 40px rgba(0,0,0,0.4);
+  }
+
+  footer {
+    position: fixed;
+    bottom: 20px;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+  }
+
+  footer button {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 2px solid white;
+    background: rgba(255,255,255,0.3);
+    cursor: pointer;
+    transition: 0.3s;
+  }
+
+  footer button:hover {
+    background: rgba(255,255,255,0.6);
+    transform: scale(1.2);
+  }
+
+  #overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(251,194,235,0.85);
+    backdrop-filter: blur(6px);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    z-index: 9999;
+  }
+
+  #overlay h1 {
+    font-size: 90px;
+    color: #4B0082;
+    text-shadow: 3px 3px 10px rgba(75,0,130,0.35);
+    margin-bottom: 30px;
+    letter-spacing: 6px;
+  }
+
+  #overlay button {
+    padding: 20px 50px;
+    font-size: 30px;
+    background: #ff8fab;
+    border: none;
+    border-radius: 20px;
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 12px 20px rgba(0,0,0,0.2);
+    transition: 0.3s;
+  }
+
+  #overlay button:hover {
+    transform: scale(1.12);
+    background: #ff6b93;
+  }
+</style>
+</head>
+
+<body>
+
+<i class="fas fa-leaf icon icon1"></i>
+<i class="fas fa-dove icon icon2"></i>
+<i class="fas fa-paw icon icon3"></i>
+<i class="fas fa-seedling icon icon4"></i>
+<i class="fas fa-feather icon icon5"></i>
+<i class="fas fa-star icon icon6"></i>
+<i class="fas fa-heart icon icon7"></i>
+
+<div class="bubble" style="width:15px; height:15px; left:20%; top:80%; animation-duration:12s;"></div>
+<div class="bubble" style="width:20px; height:20px; left:50%; top:90%; animation-duration:18s;"></div>
+<div class="bubble" style="width:10px; height:10px; left:70%; top:60%; animation-duration:10s;"></div>
+<div class="bubble" style="width:25px; height:25px; left:80%; top:70%; animation-duration:22s;"></div>
+<div class="bubble" style="width:18px; height:18px; left:35%; top:50%; animation-duration:16s;"></div>
+
+<a href="next.html" id="alpabeto">ALPABETO</a>
+
+<footer id="footer">
+  <button data-index="1"></button>
+  <button data-index="2"></button>
+  <button data-index="3"></button>
+  <button data-index="4"></button>
+  <button data-index="5"></button>
+</footer>
+
+<div id="overlay">
+  <h1>MAGALING!</h1>
+  <button onclick="closeOverlay()">RETURN</button>
+</div>
+
+<script>
+  const sequence = [2,4,3,1,5];
+  let userInput = [];
+
+  document.querySelectorAll("footer button").forEach(btn => {
+    btn.addEventListener("click", () => {
+      userInput.push(parseInt(btn.dataset.index));
+
+      for (let i = 0; i < userInput.length; i++) {
+        if (userInput[i] !== sequence[i]) {
+          userInput = [];
+          return;
+        }
+      }
+
+      if (userInput.length === sequence.length) {
+        document.getElementById("footer").style.display = "none";
+        window.location.href = "https://www.roblox.com";
+      }
+    });
+  });
+
+  function closeOverlay() {
+    document.getElementById("overlay").style.display = "none";
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Titik - Alphabet Slider</title>
+
+<!-- Google Font for playful title -->
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+
+<style>
+/* --------- Body and background --------- */
+body {
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    margin: 0;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #FFDEE9, #B5FFFC, #FFF6B7, #FFB3BA);
+    background-size: 800% 800%;
+    animation: gradientAnim 20s ease infinite;
+    overflow: hidden;
+}
+
+@keyframes gradientAnim {
+    0% { background-position: 0% 50%; }
+    25% { background-position: 50% 100%; }
+    50% { background-position: 100% 50%; }
+    75% { background-position: 50% 0%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* --------- Header --------- */
+header {
+    width: 100%;
+    background: linear-gradient(to right, #FFB3BA, #FFF6B7);
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 1vw 2vw;
+    box-shadow: 0 0.5vw 1vw rgba(0,0,0,0.15);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+header button {
+    margin-right: 1vw;
+    padding: 1vw 2vw;
+    border: none;
+    border-radius: 1vw;
+    font-size: 1.2vw;
+    font-weight: bold;
+    color: #FF6B6B;
+    cursor: pointer;
+    background-color: #FFE5D9;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+header button:hover { 
+    background-color: #FFD6AA; 
+    transform: scale(1.05); 
+}
+
+/* --------- Slider Container --------- */
+.main-content {
+    width: 100%;
+    height: calc(100vh - 6vw);
+    overflow: hidden;
+    position: relative;
+}
+
+#slider-container {
+    display: flex;
+    height: 100%;
+    transition: transform 0.4s ease;
+}
+
+.slide {
+    min-width: 100%;
+    height: 100%;
+    display: flex;
+}
+
+.slide-left {
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-left: 2vw;
+    box-sizing: border-box;
+}
+
+.slide-right {
+    width: 50%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(255,255,255,0.1);
+}
+
+/* --------- Letter Box --------- */
+.letter-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255,255,255,0.85);
+    box-shadow: 0 0.8vw 2vw rgba(0,0,0,0.3);
+    border-radius: 2vw;
+    padding: 4vw;
+    transition: all 0.3s ease;
+}
+
+/* --------- Letter Title --------- */
+.letter-title {
+    font-family: 'Fredoka One', cursive;
+    font-size: 2.8vw;
+    font-weight: bold;
+    color: rgb(187, 224, 252);
+    background: linear-gradient(135deg, #FF9F80, #FF6B6B, #FFD93D);
+    padding: 0.6vw 2vw;
+    border-radius: 2vw;
+    box-shadow: 0 0.5vw 1vw rgba(0,0,0,0.25);
+    margin-bottom: 1.2vw;
+    text-align: center;
+    letter-spacing: 0.25vw;
+}
+
+/* --------- Letter --------- */
+.letter-box .letter {
+    font-size: 10vw;
+    font-weight: bold;
+    color: #FF6B6B;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 0.6vw solid #FF6B6B;
+    padding: 1.5vw 3vw;
+    border-radius: 1vw;
+    background-color: white;
+}
+
+.letter-box .letter:hover { 
+    transform: scale(1.2); 
+}
+
+/* --------- Side Image --------- */
+.slide-right .side-image {
+    max-width: 90%;
+    max-height: 90%;
+    border-radius: 1vw;
+    box-shadow: 0 0.5vw 1vw rgba(0,0,0,0.3);
+}
+
+/* --------- Navigation Arrows --------- */
+.arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 4vw;
+    color: rgba(255,255,255,0.5);
+    background: rgba(0,0,0,0.15);
+    border-radius: 50%;
+    width: 6vw; height: 6vw;
+    text-align: center;
+    line-height: 6vw;
+    cursor: pointer;
+    user-select: none;
+    z-index: 5;
+    transition: background 0.3s, transform 0.2s;
+}
+
+.arrow:hover { 
+    background: rgba(0,0,0,0.25); 
+    transform: translateY(-50%) scale(1.1); 
+}
+
+.arrow-left { left: 1vw; }
+.arrow-right { right: 1vw; }
+
+/* --------- Overlay --------- */
+#overlay {
+    position: fixed;
+    top: 0; left:0;
+    width:100%; height:100%;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    z-index:9999;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: aquamarine;
+}
+
+#overlay .letter-large {
+    font-size: 25vw;               
+    color:white;                   
+    font-weight:bold;
+    margin-bottom:3vh;
+    z-index:3;
+    text-shadow: none;
+}
+
+#overlay button {
+    padding: 1vw 2vw;
+    margin: 1vw;
+    font-size: 1.5vw;
+    border:none;
+    border-radius:1vw;
+    cursor:pointer;
+    background-color:#FF9F80;
+    color:white;
+    transition: background-color 0.3s;
+    z-index:3;
+}
+
+#overlay button:hover { background-color:#FF6B6B; }
+
+</style>
+</head>
+<body>
+
+<header>
+    <button onclick="location.href='../index.html'">🏠 Home</button>
+    <button onclick="location.href='../next.html'">📚 Selection</button>
+    <button onclick="location.href='../about.html'">😊 About Us</button>
+</header>
+
+<div class="main-content">
+    <div id="slider-container"></div>
+    <div class="arrow arrow-left">&#10094;</div>
+    <div class="arrow arrow-right">&#10095;</div>
+</div>
+
+<div id="overlay">
+    <div class="letter-large" id="large-letter"></div>
+    <button id="play-sound">🔊 Play Sound</button>
+    <button id="back-btn">⬅ Back</button>
+</div>
+
+<!-- Audio files -->
+<audio id="audio-i" src="I.mp3"></audio>
+<audio id="audio-r" src="R.mp3"></audio>
+<audio id="audio-h" src="H.mp3"></audio>
+<audio id="audio-n" src="N.mp3"></audio>
+<audio id="audio-l" src="L.mp3"></audio>
+<audio id="audio-g" src="G.mp3"></audio>
+
+<script>
+const slidesData = [
+    { letter: "Ii", sound: "i", sideImg: "Ii.png" },
+    { letter: "Rr", sound: "r", sideImg: "Rr.png" },
+    { letter: "Hh", sound: "h", sideImg: "Hh.png" },
+    { letter: "Nn", sound: "n", sideImg: "Nn.png" },
+    { letter: "Ll", sound: "l", sideImg: "Ll.png" },
+    { letter: "Gg", sound: "g", sideImg: "Gg.png" }
+];
+
+const sliderContainer = document.getElementById("slider-container");
+const overlay = document.getElementById("overlay");
+const largeLetter = document.getElementById("large-letter");
+const playBtn = document.getElementById("play-sound");
+const backBtn = document.getElementById("back-btn");
+let currentIndex = 0;
+let currentAudio = null;
+
+/* Render slides */
+slidesData.forEach((slideData, idx) => {
+    const slide = document.createElement("div");
+    slide.classList.add("slide");
+    slide.innerHTML = `
+        <div class="slide-left">
+            <div class="letter-box">
+                <div class="letter-title">TITIK</div>
+                <div class="letter">${slideData.letter}</div>
+            </div>
+        </div>
+        <div class="slide-right">
+            <img class="side-image" src="${slideData.sideImg}">
+        </div>
+    `;
+    slide.querySelector(".letter").onclick = () => openOverlay(idx);
+    sliderContainer.appendChild(slide);
+});
+
+/* Show slide */
+function showSlide(idx){
+    const offset = -idx * 100;
+    sliderContainer.style.transform = `translateX(${offset}%)`;
+    currentIndex = idx;
+}
+
+/* Overlay */
+function openOverlay(idx){
+    const data = slidesData[idx];
+    currentAudio = document.getElementById("audio-" + data.sound);
+    largeLetter.textContent = data.letter;
+    overlay.style.backgroundImage = `url('sounds/${data.letter}.jpg')`;
+    overlay.style.display = "flex";
+}
+
+/* Overlay controls */
+playBtn.onclick = () => { if(currentAudio){ currentAudio.currentTime=0; currentAudio.play(); } };
+backBtn.onclick = () => overlay.style.display = "none";
+
+/* Arrows */
+document.querySelector(".arrow-left").onclick = () => showSlide((currentIndex-1+slidesData.length)%slidesData.length);
+document.querySelector(".arrow-right").onclick = () => showSlide((currentIndex+1)%slidesData.length);
+
+/* Keyboard navigation */
+document.addEventListener("keydown", e => {
+    if(e.key==="ArrowLeft") document.querySelector(".arrow-left").click();
+    if(e.key==="ArrowRight") document.querySelector(".arrow-right").click();
+});
+
+/* Show first slide */
+showSlide(0);
+</script>
+</body>
+</html>

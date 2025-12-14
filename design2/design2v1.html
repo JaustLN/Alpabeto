@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Header + Game</title>
+
+<style>
+/* ---------- Gradient Background ---------- */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #FFDEE9, #B5FFFC, #FFF6B7, #FFB3BA);
+    background-size: 800% 800%;
+    animation: gradientAnim 20s ease infinite;
+}
+@keyframes gradientAnim {
+    0% { background-position: 0% 50%; }
+    25% { background-position: 50% 100%; }
+    50% { background-position: 100% 50%; }
+    75% { background-position: 50% 0%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* ---------- Header ---------- */
+header {
+    width: 100%;
+    background: linear-gradient(to right, #FFB3BA, #FFF6B7); /* pastel pink → pastel yellow */
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 15px 25px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+header button {
+    margin-right: 15px;
+    padding: 14px 28px;
+    border: none;
+    border-radius: 12px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #FF6B6B;
+    cursor: pointer;
+    background-color: #FFE5D9;
+    transition: background-color 0.3s, transform 0.2s;
+}
+header button:hover {
+    background-color: #FFD6AA;
+    transform: scale(1.05);
+}
+
+/* ---------- MAIN CONTENT ---------- */
+.main {
+    padding: 40px;
+    text-align: center;
+}
+
+/* MENU BOXES side-by-side */
+.menu-wrapper {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-bottom: 30px;
+}
+
+.menu-box {
+    width: 250px;
+    padding: 25px;
+    background: white;
+    border-radius: 22px;
+    font-size: 26px;
+    font-weight: bold;
+    cursor: pointer;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    transition: 0.3s;
+}
+.menu-box:hover {
+    transform: scale(1.05);
+    background: #FFE8D6;
+}
+
+/* Game Container */
+.game-container {
+    margin: 0 auto;
+    padding: 20px;
+    background: white;
+    border-radius: 20px;
+    width: 80%;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+.letters {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+/* Buttons */
+.letter-btn, .match {
+    padding: 20px;
+    border-radius: 18px;
+    font-size: 40px;
+    cursor: pointer;
+    width: 100px;
+    text-align: center;
+    transition: 0.2s;
+    user-select: none;
+}
+
+.letter-btn {
+    background: #FFF2CC;
+}
+.letter-btn:hover {
+    transform: scale(1.2);
+    background: #FFD580;
+}
+
+.match {
+    background: #CCE5FF;
+}
+.match:hover {
+    transform: scale(1.2);
+    background: #A7D3FF;
+}
+
+/* Highlight pressed */
+.selected-cap {
+    background: #6DFF70 !important;
+    transform: scale(1.2);
+}
+.selected-small {
+    background: #6DB6FF !important;
+    transform: scale(1.2);
+}
+</style>
+</head>
+
+<body>
+
+<!-- Header -->
+<header>
+    <button onclick="location.href='../index.html'">🏠 Homepage</button>
+    <button onclick="location.href='../next.html'">📚 Selection</button>
+    <button onclick="location.href='../about.html'">😊 About Us</button>
+</header>
+
+<!-- Main Content -->
+<div class="main">
+
+    <!-- PATINIG + KATINIG SIDE BY SIDE -->
+    <div class="menu-wrapper">
+        <div class="menu-box" onclick="showP()">PATINIG</div>
+        <div class="menu-box" onclick="showK()">KATINIG</div>
+    </div>
+
+    <div id="gameArea"></div>
+</div>
+
+<script>
+
+/* ---------- GLOBALS ---------- */
+let selectedCap = "";
+let selectedSmall = "";
+let capBtn = null;
+let smallBtn = null;
+
+function resetSelections() {
+    if (capBtn) capBtn.classList.remove("selected-cap");
+    if (smallBtn) smallBtn.classList.remove("selected-small");
+    selectedCap = "";
+    selectedSmall = "";
+    capBtn = null;
+    smallBtn = null;
+}
+
+/* Shuffle Function */
+function shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        let j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+
+/* ------------ PATINIG GAME ------------ */
+function showP() {
+    const vowels = ["A","E","I","O","U"];
+    const capRand = shuffle([...vowels]);
+    const smallRand = shuffle(vowels.map(v => v.toLowerCase()));
+
+    let html = `
+        <div class='game-container'>
+            <h2>🔤 Piliin ang Naangkop</h2>
+            <p>Itugma ang Malaki at Maliit na Titik</p>
+
+            <div class='letters'>
+                ${capRand.map(v=>`<div class='letter-btn' onclick="selectCap('${v}', this)">${v}</div>`).join("")}
+            </div>
+
+            <div class='letters'>
+                ${smallRand.map(v=>`<div class='match' onclick="selectSmall('${v}', this)">${v}</div>`).join("")}
+            </div>
+
+            <p id="result" style="font-size:24px; margin-top:20px; font-weight:bold;"></p>
+        </div>
+    `;
+    document.getElementById("gameArea").innerHTML = html;
+    resetSelections();
+}
+
+/* ------------ KATINIG GAME ------------ */
+function showK() {
+    let allK = ["N","G","Y","P","R","W","H","J","Q","V"];
+    let chosen = shuffle([...allK]).slice(0,5);
+    let capRand = shuffle([...chosen]);
+    let smallRand = shuffle(chosen.map(c => c.toLowerCase()));
+
+    let html = `
+        <div class='game-container'>
+            <h2>🔡 Connect the KATINIG</h2>
+            <p>Match Capital Letter to Small Letter</p>
+
+            <div class='letters'>
+                ${capRand.map(v=>`<div class='letter-btn' onclick="selectCap('${v}', this)">${v}</div>`).join("")}
+            </div>
+
+            <div class='letters'>
+                ${smallRand.map(v=>`<div class='match' onclick="selectSmall('${v}', this)">${v}</div>`).join("")}
+            </div>
+
+            <p id="result" style="font-size:24px; margin-top:20px; font-weight:bold;"></p>
+        </div>
+    `;
+    document.getElementById("gameArea").innerHTML = html;
+    resetSelections();
+}
+
+/* ---------- SELECTION FUNCTIONS ---------- */
+function selectCap(letter, element){
+    if (capBtn) capBtn.classList.remove("selected-cap");
+    element.classList.add("selected-cap");
+
+    capBtn = element;
+    selectedCap = letter;
+
+    checkMatch();
+}
+
+function selectSmall(letter, element){
+    if (smallBtn) smallBtn.classList.remove("selected-small");
+    element.classList.add("selected-small");
+
+    smallBtn = element;
+    selectedSmall = letter;
+
+    checkMatch();
+}
+
+function checkMatch(){
+    if(selectedCap !== "" && selectedSmall !== ""){
+        const resultBox = document.getElementById("result");
+
+        if(selectedCap.toLowerCase() === selectedSmall){
+            resultBox.innerHTML = `✅ Tama! ${selectedCap} = ${selectedSmall}`;
+        } else {
+            resultBox.innerHTML = `❌ Mali! Try again.`;
+        }
+
+        setTimeout(()=>resetSelections(), 600);
+    }
+}
+</script>
+
+</body>
+</html>

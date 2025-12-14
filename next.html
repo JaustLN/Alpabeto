@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Design Selection</title>
+<style>
+/* ---------- Global Theme Gradient ---------- */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(135deg,#FFDEE9,#B5FFFC,#FFF6B7,#FFB3BA);
+    background-size: 800% 800%;
+    animation: gradientAnim 20s ease infinite;
+    position: relative;
+    overflow: hidden;
+}
+@keyframes gradientAnim {
+    0% { background-position: 0% 50%; }
+    25% { background-position: 50% 100%; }
+    50% { background-position: 100% 50%; }
+    75% { background-position: 50% 0%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* ---------- Buttons Theme (soft pastel) ---------- */
+.return-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    width: 80px;
+    height: 80px;
+    background: #FF8DA1; /* softer pink */
+    color: white;
+    font-size: 36px;
+    text-decoration: none;
+    border-radius: 25px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.25);
+    transition: 0.3s;
+    z-index: 10;
+}
+.return-btn:hover {
+    background: #FF6B8A;
+    transform: scale(1.1);
+}
+
+.trace-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 80px;
+    height: 80px;
+    background: #7ED9F7; /* soft sky blue */
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 25px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.25);
+    transition: 0.3s;
+    z-index: 10;
+}
+.trace-btn i { font-size: 28px; }
+.trace-btn:hover {
+    background: #56C7EE;
+    transform: scale(1.1);
+}
+
+.about-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 130px;
+    height: 60px;
+    background: #A98BFF; /* soft lilac */
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 25px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.25);
+    transition: 0.3s;
+    z-index: 10;
+}
+.about-btn:hover {
+    background: #8F6DFF;
+    transform: scale(1.1);
+}
+
+/* ---------- Grid Container ---------- */
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px;
+    padding: 130px 20px 80px;
+    width: 90%;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+/* Center bottom option */
+.grid-container a.square3 {
+    grid-column: 1 / -1;
+    justify-self: center;
+    width: 100%;
+    max-width: 400px;
+}
+
+/* ---------- Squares Theme ---------- */
+.square {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    border-radius: 25px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.20);
+    transition: transform 0.3s, filter 0.3s;
+    padding: 20px;
+    min-width: 400px;
+}
+
+.square.large { 
+    font-size: 28px; 
+    min-height: 160px; 
+}
+
+/* Soft Pastel Card Colors */
+.square1 { background: linear-gradient(135deg,#FF9AB8,#FF6B95); }   /* Pink rose */
+.square2 { background: linear-gradient(135deg,#FFE07D,#FFC65C); }  /* Soft yellow peach */
+.square3 { background: linear-gradient(135deg,#8EE6A4,#56C76F); }  /* Soft green mint */
+
+.square:hover {
+    transform: scale(1.05);
+    filter: brightness(1.12);
+}
+
+/* ---------- Floating Icons Pastel ---------- */
+.floating-icon {
+    position: absolute;
+    font-size: 2.3em;
+    color: rgba(255,255,255,0.9);
+    pointer-events: none;
+    animation: floatIcon linear infinite;
+    filter: drop-shadow(0 3px 4px rgba(0,0,0,0.15));
+}
+
+@keyframes floatIcon {
+    0% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-18px) rotate(160deg); }
+    100% { transform: translateY(0) rotate(360deg); }
+}
+
+/* ---------- Screen Reader Only ---------- */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* ---------- Responsive ---------- */
+@media(max-width:768px){
+    .grid-container {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+    .square.large {
+        min-height: 140px; 
+        font-size:24px; 
+        min-width: auto; 
+        width: 100%;
+    }
+    .return-btn, .trace-btn {
+        width:70px;
+        height:70px;
+        font-size:32px;
+    }
+    .about-btn {
+        width:110px;
+        height:50px;
+        font-size:16px;
+    }
+}
+</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+<!-- Return Home -->
+<a href="index.html" class="return-btn">🏠</a>
+
+<!-- Trace Button -->
+<a href="trace.html" class="trace-btn" title="Trace It">
+    <i class="fas fa-pen" aria-hidden="true"></i>
+    <span class="sr-only">Trace It</span>
+</a>
+
+<!-- Squares Grid -->
+<div class="grid-container">
+    <a href="design1/design1.html" class="square large square1">Titik</a>
+    <a href="design3/design3.html" class="square large square2">Tunog</a>
+    <a href="design2/design2.html" class="square large square3">Malaki at Maliit na Titik</a>
+</div>
+
+<!-- About Us Button -->
+<a href="about.html" class="about-btn">About Us</a>
+
+<!-- Floating Pastel Icons -->
+<i class="fas fa-star floating-icon" style="top:10%; left:5%; animation-duration: 12s;"></i>
+<i class="fas fa-leaf floating-icon" style="top:20%; left:80%; animation-duration: 15s;"></i>
+<i class="fas fa-dove floating-icon" style="top:70%; left:10%; animation-duration: 18s;"></i>
+<i class="fas fa-paw floating-icon" style="top:50%; left:50%; animation-duration: 20s;"></i>
+<i class="fas fa-apple-alt floating-icon" style="top:80%; left:70%; animation-duration: 16s;"></i>
+<i class="fas fa-seedling floating-icon" style="top:40%; left:30%; animation-duration: 14s;"></i>
+<i class="fas fa-bolt floating-icon" style="top:60%; left:85%; animation-duration: 17s;"></i>
+
+</body>
+</html>

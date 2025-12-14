@@ -1,0 +1,126 @@
+/* General body styles */
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin-top: 50px;
+    background-color: #f0f0f0;
+    position: relative;
+}
+
+/* ALPABETO link */
+h1 a {
+    color: #333;
+    text-decoration: none;
+    font-size: 48px;
+    transition: color 0.3s;
+}
+h1 a:hover {
+    color: #007BFF;
+    cursor: pointer;
+}
+
+/* General h1 styling */
+h1 {
+    color: #333;
+    font-size: 36px;
+    margin-top: 60px;
+}
+
+/* Return buttons */
+.return-btn {
+    display: inline-block;
+    padding: 12px 25px;
+    background-color: #28a745;
+    color: white;
+    font-size: 18px;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: background-color 0.3s, transform 0.3s;
+}
+.return-btn:hover {
+    background-color: #1e7e34;
+    transform: scale(1.05);
+    cursor: pointer;
+}
+
+/* Top-left button */
+.return-btn.top-left {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    font-size: 16px;
+    padding: 10px 20px;
+}
+
+/* Grid container for next.html */
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    gap: 20px;
+    justify-content: center;
+    margin-top: 40px;
+}
+
+/* Squares */
+.square {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #007BFF;
+    color: white;
+    text-decoration: none;
+    border-radius: 10px;
+    font-size: 18px;
+    transition: transform 0.3s, background-color 0.3s;
+}
+.square.large {
+    width: 400px;
+    height: 200px;
+    font-size: 40px;
+}
+.square.large:hover {
+    transform: scale(1.1);
+    background-color: #0056b3;
+}
+.square.small {
+    width: 400px;
+    height: 200px;
+    font-size: 40px;
+}
+.square.small:hover {
+    transform: scale(1.05);
+    background-color: #0056b3;
+}
+
+/* -------- Design 1 Styles (Letter & Day Dropdown) -------- */
+
+/* Day dropdown below return button */
+.day-container {
+    position: absolute;
+    top: 70px;
+    left: 20px;
+    z-index: 1000;
+}
+
+#day-select {
+    padding: 10px 15px;
+    font-size: 16px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+}
+
+/* Letter display */
+.letter-display {
+    font-size: 150px;
+    font-weight: bold;
+    margin-top: 150px;
+    cursor: pointer;
+    color: #007BFF;
+    transition: transform 0.2s, color 0.2s;
+}
+
+.letter-display:hover {
+    transform: scale(1.1);
+    color: #0056b3;
+}
