@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Titik Matching Game</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+}
+
+/* ---------- BODY ---------- */
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #FFDEE9, #B5FFFC, #FFF6B7, #FFB3BA);
+    background-size: 800% 800%;
+    animation: gradientAnim 20s ease infinite;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+@keyframes gradientAnim {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* ---------- HEADER (Accessible, larger targets for kids) ---------- */
+header.header-nav {
+    flex-shrink: 0;
+    background: transparent; /* match next.html palette (show gradient behind) */
+    display: flex;
+    gap: 0.8rem;
+    align-items: center;
+    padding: 0.8rem 1rem;
+}
+
+.header-btn {
+    padding: 0.9rem 1.4rem;
+    border: none;
+    border-radius: 14px;
+    font-size: 1.15rem;
+    font-weight: 800;
+    cursor: pointer;
+    background: #FF6B6B;
+    color: #fff;
+    box-shadow: 0 8px 18px rgba(0,0,0,0.18);
+}
+
+.header-btn--secondary { background-color: #56C7EE; color: #fff; }
+.header-btn--tertiary { background-color: #8F6DFF; color: #fff; }
+
+.header-btn:hover { transform: translateY(-4px) scale(1.02); }
+.header-btn:focus-visible { outline: 4px solid rgba(0,48,80,0.95); outline-offset:4px; }
+
+/* single return button style (high contrast on dark header) */
+.header-btn--return {
+    /* pastel rounded return button matching next.html */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 96px;
+    height: 96px;
+    background: #FF8DA1;
+    color: #ffffff;
+    font-size: 44px;
+    border-radius: 28px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.28);
+    transition: transform 0.22s ease, background 0.22s;
+    border: 3px solid rgba(255,255,255,0.12);
+}
+.return-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 18px;
+    left: 18px;
+    width: 96px;
+    height: 96px;
+    background: #FF8DA1; /* softer pink */
+    color: white;
+    font-size: 44px;
+    text-decoration: none;
+    border-radius: 28px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.28);
+    transition: transform 0.22s ease, background 0.22s;
+    z-index: 1100;
+    border: 3px solid rgba(255,255,255,0.12);
+}
+.return-btn:hover { background: #FF6B8A; transform: scale(1.06); }
+.header-btn--return:hover { background: #FF6B8A; transform: scale(1.06); }
+
+/* small icon to return to difficulty selection */
+.diff-return {
+    display:flex; align-items:center; justify-content:center;
+    position: fixed; top: 22px; left: 124px; width:56px; height:56px;
+    background: #FF8DA1; color: #fff; border-radius:12px; font-size:28px; z-index:1200;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.12); border:0;
+}
+.diff-return:hover { transform: scale(1.04); opacity:0.95 }
+
+/* ---------- MAIN ---------- */
+.main {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: calc(100vh - 80px);
+}
+
+/* ---------- START BUTTON ---------- */
+.start-btn {
+    font-size: clamp(48px, 6vw, 72px);
+    font-weight: bold;
+    padding: clamp(40px, 6vh, 80px) clamp(60px, 8vw, 120px);
+    border-radius: 40px;
+    cursor: pointer;
+    background: #FFE8D6;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    transition: transform 0.3s;
+}
+
+.difficulty-bar { display:flex; gap:12px; justify-content:center; margin-bottom:14px; }
+.difficulty-btn { padding:10px 18px; border-radius:12px; border:none; font-weight:800; background:#E8E8E8; cursor:pointer; }
+.difficulty-btn.active { background:#FF8DA1; color:#fff; transform:translateY(-3px); box-shadow:0 8px 18px rgba(0,0,0,0.12); }
+
+.start-btn:hover {
+    transform: scale(1.05);
+}
+
+/* ---------- GAME CONTAINER ---------- */
+.game-container {
+    width: min(98%, 1400px);   /* WIDER */
+    height: min(85vh, 720px);
+    background: white;
+    padding: clamp(30px, 4vh, 60px);
+    border-radius: 40px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.35);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: center;
+}
+
+/* ---------- TITLE ---------- */
+.game-container h2 {
+    font-size: clamp(30px, 3vw, 42px); /* Slightly tuned */
+    margin: 0;
+    white-space: nowrap; /* FORCE ONE LINE */
+}
+
+/* ---------- LETTER GRID ---------- */
+.letters {
+    display: grid;
+    gap: clamp(12px, 1.8vw, 28px);
+    flex: 1;
+    align-content: center;
+}
+
+.letters.cols-4 { grid-template-columns: repeat(4, 1fr); }
+.letters.cols-5 { grid-template-columns: repeat(5, 1fr); }
+.letters.cols-6 { grid-template-columns: repeat(6, 1fr); }
+.letters.cols-7 { grid-template-columns: repeat(7, 1fr); }
+.letters.cols-8 { grid-template-columns: repeat(8, 1fr); }
+.letters.cols-9 { grid-template-columns: repeat(9, 1fr); }
+.letters.cols-10 { grid-template-columns: repeat(10, 1fr); }
+.letters.cols-11 { grid-template-columns: repeat(11, 1fr); }
+.letters.cols-12 { grid-template-columns: repeat(12, 1fr); }
+
+.letter {
+    font-size: clamp(36px, 4vw, 56px);
+    padding: clamp(20px, 3vh, 40px);
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: transform 0.2s;
+}
+
+.letter:hover {
+    transform: scale(1.1);
+}
+
+.selected {
+    outline: 5px solid #000;
+}
+
+/* ---------- RESULT ---------- */
+#result {
+    height: 50px;
+    font-size: clamp(28px, 3vw, 40px);
+    font-weight: bold;
+    color: red;
+}
+
+/* ---------- OVERLAY ---------- */
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(135deg, #FFD6E0, #B3DAFF);
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.overlay h1 {
+    font-size: clamp(60px, 8vw, 90px);
+    color: #FF6B6B;
+    margin-bottom: 40px;
+}
+
+.overlay button {
+    padding: 20px 50px;
+    font-size: 28px;
+    border-radius: 20px;
+    border: none;
+    background: #FF6B6B;
+    color: white;
+    cursor: pointer;
+    margin: 10px;
+}
+
+.icon-only {
+    padding: 12px 18px; font-size: 22px; border-radius: 12px; background: #FF8DA1; border: none; color: #fff; cursor: pointer;
+}
+
+/* Hard mode: remove white background and reduce tile sizing to fit more letters */
+.game-container.hard {
+    background: white;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.35);
+    padding: clamp(30px, 4vh, 60px);
+    border-radius: 40px;
+}
+.game-container.hard h2 { color: #112; }
+.game-container.hard .letter { padding: clamp(12px, 2vh, 18px); font-size: clamp(18px, 2.4vw, 24px); border-radius:12px; }
+</style>
+</head>
+
+<body>
+
+<header role="navigation" class="header-nav" aria-label="Primary navigation">
+    <a href="../next.html" class="return-btn" aria-label="Return to Selection">🏠</a>
+    <button id="diffReturn" class="diff-return" title="Difficulty selection" aria-label="Return to difficulty selection">⬅</button>
+</header>
+
+<div class="main">
+    <div id="gameArea">
+        <div class="difficulty-bar">
+            <button class="difficulty-btn active" id="diff-easy" onclick="setDifficulty('easy')">Easy</button>
+            <button class="difficulty-btn" id="diff-medium" onclick="setDifficulty('medium')">Medium</button>
+            <button class="difficulty-btn" id="diff-hard" onclick="setDifficulty('hard')">Hard</button>
+        </div>
+        <div style="display:flex;gap:12px;justify-content:center;align-items:center;flex-direction:column;">
+            <div class="start-btn" onclick="showLetters()">Maglaro</div>
+            <div style="margin-top:10px;font-size:14px;color:#333">Selected difficulty: <span id="selectedDiff">Easy</span></div>
+        </div>
+    </div>
+</div>
+
+<div class="overlay" id="overlay">
+    <h1>MAGALING!</h1>
+    <button onclick="showLetters()">Play Again</button>
+    <button class="icon-only" onclick="location.href='../sandbl/design2.html'" aria-label="Return">🔙</button>
+</div>
+
+<script>
+let first = null;
+let matchesLeft = 0;
+let selectedDifficulty = 'easy';
+
+function setDifficulty(level){
+    selectedDifficulty = level;
+    document.getElementById('selectedDiff').textContent = level.charAt(0).toUpperCase() + level.slice(1);
+    document.querySelectorAll('.difficulty-btn').forEach(b => b.classList.remove('active'));
+    const el = document.getElementById('diff-' + level);
+    if(el) el.classList.add('active');
+}
+
+const colors = {
+    i: "#FFD580",
+    r: "#B5EAD7",
+    h: "#C7CEEA",
+    n: "#FF9AA2",
+    l: "#E2F0CB",
+    g: "#F6C1CC",
+    "ñ": "#CDEAFF",
+    "ng": "#FFD1A9"
+};
+
+function shuffle(arr) {
+    return arr.sort(() => Math.random() - 0.5);
+}
+
+function showLetters() {
+    // full letter list: include ñ and ng after n
+    const fullLetters = [
+        'a','b','c','d','e','f','g','h','i','j','k','l','m',
+        'n','ñ','ng','o','p','q','r','s','t','u','v','w','x','y','z'
+    ];
+
+    let letters = [];
+    if(selectedDifficulty === 'easy'){
+        // pick 8 random letters for easy each game
+        const pool = fullLetters.slice();
+        pool.sort(() => Math.random() - 0.5);
+        letters = pool.slice(0,8);
+    } else if(selectedDifficulty === 'medium'){
+        // medium uses first 16 letters (remove four)
+        letters = fullLetters.slice(0,16);
+    } else { // hard
+        letters = fullLetters.slice();
+    }
+
+    matchesLeft = letters.length;
+
+    let all = [];
+    letters.forEach((l, idx) => {
+        all.push({ v: l.toUpperCase(), k: l, i: idx });
+        all.push({ v: l, k: l, i: idx });
+    });
+
+    all = shuffle(all);
+
+    // helper to compute color when not predefined
+        function colorFor(key, idx) {
+            if (colors[key]) return colors[key];
+            const hue = Math.round((idx / Math.max(1, letters.length)) * 330);
+            return `hsl(${hue} 85% 72%)`;
+        }
+
+    // choose columns based on difficulty: Easy=4, Medium=8, Hard=12
+    let cols = 4;
+    if(selectedDifficulty === 'easy') cols = 4;
+    else if(selectedDifficulty === 'medium') cols = 8;
+    else cols = 12;
+        const lettersHtml = all.map(l => `
+            <div class="letter"
+                style="background:${colorFor(l.k,l.i)}"
+                onclick="selectLetter('${l.k}', this)">
+                ${l.v}
+            </div>
+        `).join("");
+
+        document.getElementById("gameArea").innerHTML = `
+            <div class="game-container ${selectedDifficulty === 'hard' ? 'hard' : ''}">
+                <h2>Pagtambalin ang Malaki at Maliit na Titik</h2>
+                <div class="letters cols-${cols}">
+                    ${lettersHtml}
+                </div>
+                <div id="result"></div>
+            </div>
+        `;
+
+    document.getElementById("overlay").style.display = "none";
+    first = null;
+
+        // show diff-return icon when inside a game
+        const diffBtn = document.getElementById('diffReturn'); if(diffBtn) diffBtn.style.display = 'flex';
+}
+
+function selectLetter(key, el) {
+    const result = document.getElementById("result");
+
+    if (!first) {
+        first = { key, el };
+        el.classList.add("selected");
+        result.textContent = "";
+    } else {
+        if (first.el === el) return;
+
+        if (first.key === key) {
+            first.el.style.visibility = "hidden";
+            el.style.visibility = "hidden";
+            matchesLeft--;
+
+            if (matchesLeft === 0) {
+                document.getElementById("overlay").style.display = "flex";
+            }
+        } else {
+            result.textContent = "MALI!";
+        }
+
+        first.el.classList.remove("selected");
+        first = null;
+    }
+}
+
+// Render the initial difficulty selection UI into #gameArea
+function renderStartScreen(){
+    document.getElementById('gameArea').innerHTML = `
+        <div class="difficulty-bar">
+            <button class="difficulty-btn" id="diff-easy" onclick="setDifficulty('easy')">Easy</button>
+            <button class="difficulty-btn" id="diff-medium" onclick="setDifficulty('medium')">Medium</button>
+            <button class="difficulty-btn" id="diff-hard" onclick="setDifficulty('hard')">Hard</button>
+        </div>
+        <div style="display:flex;gap:12px;justify-content:center;align-items:center;flex-direction:column;">
+            <div class="start-btn" onclick="showLetters()">Maglaro</div>
+            <div style="margin-top:10px;font-size:14px;color:#333">Selected difficulty: <span id="selectedDiff">Easy</span></div>
+        </div>
+    `;
+    // restore active class
+    document.querySelectorAll('.difficulty-btn').forEach(b => b.classList.remove('active'));
+    const el = document.getElementById('diff-' + selectedDifficulty);
+    if(el) el.classList.add('active');
+        // hide diff-return icon while on selection screen
+        const diffBtn = document.getElementById('diffReturn'); if(diffBtn) diffBtn.style.display = 'none';
+}
+
+// wire the small icon button to return to difficulty selection
+const diffReturnBtn = document.getElementById('diffReturn');
+if(diffReturnBtn){
+    diffReturnBtn.addEventListener('click', (e)=>{ e.preventDefault(); renderStartScreen(); });
+    // hide initially on load (renderStartScreen will also hide it)
+    diffReturnBtn.style.display = 'none';
+}
+
+// ensure start screen is correct on load
+renderStartScreen();
+</script>
+
+</body>
+</html>
