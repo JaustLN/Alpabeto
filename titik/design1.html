@@ -314,7 +314,7 @@ header.header-nav {
 
 <!-- Return button fixed to match site palette -->
 <a href="../next.html" class="return-btn" aria-label="Return to Selection">🏠</a>
-<button id="showAllBtn" class="header-btn header-btn--secondary" style="position:fixed; top:18px; right:18px; z-index:1100;">All</button>
+<button id="showAllBtn" class="header-btn header-btn--secondary" style="position:fixed; top:18px; right:18px; z-index:1100;">Aa</button>
 
 <div class="main-content">
     <div id="slider-container"></div>
@@ -349,11 +349,18 @@ const sliderContainer = document.getElementById("slider-container");
 /* Generate audio elements dynamically for the full alphabet */
 const audioContainer = document.createElement("div");
 audioContainer.style.display = "none";
+// Use normalized, ASCII-lowercase filenames for audio assets (renamed on disk)
+const audioFilenameMap = {
+    'ng': 'ng.mp3',
+    'ñ': 'ntilde.mp3'
+};
 letters.forEach(letter => {
     const audio = document.createElement("audio");
-    const id = `audio-${letter.toLowerCase()}`;
+    const key = letter.toLowerCase();
+    const id = `audio-${key}`;
     audio.id = id;
-    audio.src = `${letter.toLowerCase()}.mp3`;
+    // prefer mapped name, otherwise use lowercase letter filename
+    audio.src = audioFilenameMap[key] || `${key}.mp3`;
     audioContainer.appendChild(audio);
 });
 document.body.appendChild(audioContainer);
@@ -394,9 +401,10 @@ function showSlide(idx){
 function openOverlay(idx){
     const data = slidesData[idx];
     currentAudio = document.getElementById("audio-" + data.sound);
-    if(window.setPlayingElement) window.clearPlaying();
+    if(window.clearPlaying) window.clearPlaying();
     largeLetter.textContent = data.letter;
-    overlay.style.backgroundImage = `url('sounds/${data.letter}.jpg')`;
+    // Use the slide's side image for the overlay background (keeps paths consistent)
+    overlay.style.backgroundImage = `url('${data.sideImg}')`;
     overlay.style.display = "flex";
 }
 
