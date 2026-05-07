@@ -74,33 +74,14 @@
     window.emitConfetti = spawnConfetti;
 })();
 
-// Pause and reset all audio elements on the page
-window.pauseAllAudio = function(){
-    try{
-        // pause/rewind attached <audio> elements
-        document.querySelectorAll('audio').forEach(a => { a.pause(); try{ a.currentTime = 0; }catch(e){} });
-        // pause any pooled unattached Audio objects
-        if(window._audioPool && window._audioPool.length){
-            window._audioPool.forEach(a => { try{ a.pause(); a.currentTime = 0; }catch(e){} });
-        }
-        // clear playing state visuals
-        if(window.clearPlaying) window.clearPlaying();
-        // clear currently tracked audio
-        try{ if(window.currentlyPlayingAudio){ window.currentlyPlayingAudio.pause(); try{ window.currentlyPlayingAudio.currentTime = 0; }catch(e){} } window.currentlyPlayingAudio = null; }catch(e){}
-    }catch(err){ /* ignore */ }
-};
+// Note: audio pooling and forced global pause were removed to allow concurrent playback.
 
-// audio pool for unattached Audio() objects
-window._audioPool = window._audioPool || [];
-
-// Strong single-audio guard: track one currently playing audio object
+// Optional audio tracking (no forced single-audio pause)
 window.currentlyPlayingAudio = window.currentlyPlayingAudio || null;
 window.setCurrentlyPlaying = function(a){
     try{
         if(!a) return;
-        if(window.currentlyPlayingAudio && window.currentlyPlayingAudio !== a){
-            try{ window.currentlyPlayingAudio.pause(); window.currentlyPlayingAudio.currentTime = 0; }catch(e){}
-        }
+        // Do not forcibly pause other audio here — allow concurrent playback.
         window.currentlyPlayingAudio = a;
         const clear = () => { if(window.currentlyPlayingAudio === a) window.currentlyPlayingAudio = null; if(window.clearPlaying) window.clearPlaying(); };
         a.addEventListener('ended', clear, { once: true });
@@ -108,34 +89,11 @@ window.setCurrentlyPlaying = function(a){
     }catch(e){}
 };
 
-window.clearCurrentlyPlaying = function(){ try{ if(window.currentlyPlayingAudio){ window.currentlyPlayingAudio.pause(); try{ window.currentlyPlayingAudio.currentTime = 0; }catch(e){} } window.currentlyPlayingAudio = null; }catch(e){} };
+window.clearCurrentlyPlaying = function(){ try{ window.currentlyPlayingAudio = null; }catch(e){} };
 
-// Insert small CSS + global indicator element for audio playing state
-(function(){
-    const css = `
-    .is-playing { box-shadow: 0 0 0 6px rgba(255,215,0,0.12) inset, 0 6px 18px rgba(0,0,0,0.14); transform: translateY(-2px) scale(1.02); }
-    #audio-indicator { position: fixed; right: 22px; top: 86px; width: 14px; height: 14px; border-radius: 50%; background: linear-gradient(135deg,#FFDD57,#FF6B6B); box-shadow: 0 6px 18px rgba(0,0,0,0.18); z-index:1200; opacity:0; transform:scale(0.6); transition:opacity .18s, transform .18s; }
-    #audio-indicator.playing { opacity:1; transform:scale(1); }
-    `;
-    const style = document.createElement('style'); style.textContent = css; document.head.appendChild(style);
-    const ind = document.createElement('div'); ind.id = 'audio-indicator'; document.body.appendChild(ind);
-})();
-
-// Manage which DOM element should show the playing indicator
-window.setPlayingElement = function(el){
-    try{
-        document.querySelectorAll('.is-playing').forEach(x => x.classList.remove('is-playing'));
-        if(el && el.classList) el.classList.add('is-playing');
-        const ind = document.getElementById('audio-indicator'); if(ind) ind.classList.add('playing');
-    }catch(e){}
-};
-
-window.clearPlaying = function(){
-    try{
-        document.querySelectorAll('.is-playing').forEach(x => x.classList.remove('is-playing'));
-        const ind = document.getElementById('audio-indicator'); if(ind) ind.classList.remove('playing');
-    }catch(e){}
-};
+// Audio visual helpers kept as no-ops to avoid errors in pages that call them.
+window.setPlayingElement = function(/*el*/){};
+window.clearPlaying = function(){};
 
 // Existing page script: make robust if elements are missing
 const popup = document.getElementById('letter-popup');
@@ -151,8 +109,7 @@ if(letters && letters.length && popup && mainContent){
             letter.classList.add('bounce');
             const soundName = letter.getAttribute('data-sound');
             const audio = document.getElementById(`audio-${soundName}`);
-            if(audio){
-                if(window.pauseAllAudio) window.pauseAllAudio();
+                if(audio){
                 if(window.setPlayingElement) window.setPlayingElement(letter);
                 audio.currentTime = 0;
                 audio.play().catch(err => console.log('Audio failed:', err));
