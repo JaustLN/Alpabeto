@@ -5,13 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Titik - Alphabet Slider</title>
 
-<!-- Google Font for playful title -->
-<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
-
 <style>
 /* --------- Body and background --------- */
 body {
-    font-family: 'Comic Sans MS', cursive, sans-serif;
+    font-family: "Century Gothic", Arial, sans-serif;
     margin: 0;
     min-height: 100vh;
     background: linear-gradient(135deg, #FFDEE9, #B5FFFC, #FFF6B7, #FFB3BA);
@@ -73,7 +70,7 @@ header.header-nav {
     border-radius: 14px;
     font-size: 1.15rem;
     font-weight: 800;
-    font-family: 'Fredoka One', cursive, sans-serif;
+    font-family: "Century Gothic", Arial, sans-serif;
     color: #ffffff;
     background-color: #FF6B6B;
     cursor: pointer;
@@ -199,7 +196,7 @@ header.header-nav {
 
 /* --------- Letter Title --------- */
 .letter-title {
-    font-family: 'Fredoka One', cursive;
+    font-family: "Century Gothic", Arial, sans-serif;
     font-size: 2.8vw;
     font-weight: bold;
     color: rgb(187, 224, 252);
@@ -418,7 +415,6 @@ function showSlide(idx){
 /* Overlay */
 function openOverlay(idx){
     const data = slidesData[idx];
-    if(window.pauseAllAudio) window.pauseAllAudio();
     currentAudio = document.getElementById("audio-" + data.sound);
     if(window.setPlayingElement) window.clearPlaying();
     largeLetter.textContent = data.letter;
@@ -429,7 +425,6 @@ function openOverlay(idx){
 /* Overlay controls */
 playBtn.onclick = () => {
     if(currentAudio){
-        if(window.pauseAllAudio) window.pauseAllAudio();
         if(window.setPlayingElement) window.setPlayingElement(largeLetter);
         currentAudio.currentTime = 0;
         currentAudio.play().catch(() => {});
@@ -442,8 +437,8 @@ playBtn.onclick = () => {
 backBtn.onclick = () => overlay.style.display = "none";
 
 /* Arrows */
-document.querySelector(".arrow-left").onclick = () => { if(window.pauseAllAudio) window.pauseAllAudio(); showSlide((currentIndex-1+slidesData.length)%slidesData.length); };
-document.querySelector(".arrow-right").onclick = () => { if(window.pauseAllAudio) window.pauseAllAudio(); showSlide((currentIndex+1)%slidesData.length); };
+document.querySelector(".arrow-left").onclick = () => { showSlide((currentIndex-1+slidesData.length)%slidesData.length); };
+document.querySelector(".arrow-right").onclick = () => { showSlide((currentIndex+1)%slidesData.length); };
 
 /* Keyboard navigation */
 document.addEventListener("keydown", e => {
