@@ -554,7 +554,6 @@ function drawLines() {
 // Render the guide letters into each column.
 // Uses a uniform font size, handles spacing and draws a baseline under letters.
 function drawTraceLetters(letterPair) {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.globalAlpha = 0.85;
     ctx.fillStyle = "#2266CC";
     ctx.textAlign = "center";
@@ -618,14 +617,8 @@ function drawTraceLetters(letterPair) {
             startX += measures[i] + gap;
         }
 
-        // draw a subtle baseline slightly closer to the letters and a bit thinner
-        const baselineY = centerY + Math.floor(fontSize * 0.55);
-        ctx.strokeStyle = 'rgba(0,0,0,0.16)';
-        ctx.lineWidth = 2;
-        ctx.beginPath();
-        ctx.moveTo(x - totalWidth / 2 - 12, baselineY);
-        ctx.lineTo(x + totalWidth / 2 + 12, baselineY);
-        ctx.stroke();
+        // per-request: remove per-column baseline so the page guide lines
+        // (drawn by drawLines) show through like ruled paper
     });
 
     ctx.globalAlpha = 1.0;
